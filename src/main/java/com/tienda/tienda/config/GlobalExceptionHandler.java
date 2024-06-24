@@ -1,4 +1,4 @@
-package com.tienda.tienda.exceptions;
+package com.tienda.tienda.config;
 
 
 import java.util.ArrayList;
