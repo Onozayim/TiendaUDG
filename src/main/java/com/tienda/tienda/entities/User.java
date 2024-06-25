@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -17,11 +16,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.tienda.tienda.annotations.PasswordMatching;
 import com.tienda.tienda.annotations.StrongPassword;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
@@ -45,6 +47,7 @@ import lombok.NoArgsConstructor;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, columnDefinition = "BIGINT(20) UNSIGNED")
     private Long id;
 
     @Column(nullable = false, unique = true, length = 50)
@@ -80,13 +83,14 @@ public class User implements UserDetails {
     @NotBlank(message = "Se debe confirmar la contraseña")
     private String confirm_password;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user_id", orphanRemoval = true)
+    private List<Product> products;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        System.out.println("get Authorities");
         List<GrantedAuthority> authorities = Arrays.stream(roles.split(";"))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-        System.out.println(authorities);
         return authorities;
     }
 
