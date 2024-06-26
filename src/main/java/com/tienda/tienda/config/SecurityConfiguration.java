@@ -30,6 +30,7 @@ public class SecurityConfiguration {
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/v1/auth/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/v1/user/**").authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/v1/products/**").authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

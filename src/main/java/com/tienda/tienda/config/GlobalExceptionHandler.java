@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import javax.security.auth.login.AccountLockedException;
 
@@ -102,11 +103,20 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(NoSuchElementException.class)
+    protected ResponseEntity<?> noSuchElement(NoSuchElementException ex, HttpServletRequest request) {
+        return this.jsonResponses.ReturnErrorMessage(
+            ex.getMessage(),
+            HttpStatus.NOT_FOUND
+        );
+    }
+    
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<?> generalException(Exception ex, HttpServletRequest request) {
         System.out.println("EXCEPCION");
         System.out.println(ex.getMessage());
         System.out.println(ex.getClass());
+        // ex.printStackTrace();
 
         return this.jsonResponses.ReturnErrorMessage(
             StringConsts.Expecion, 

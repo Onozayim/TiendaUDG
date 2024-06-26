@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.tienda.tienda.entities.User;
 import com.tienda.tienda.repositories.UserRepository;
-import com.tienda.tienda.vars.params.AuthParams;
+import com.tienda.tienda.vars.params.AuthDTO;
 
 @Service
 public class AuthenticationService {
@@ -21,12 +21,11 @@ public class AuthenticationService {
 
     public User signup(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setConfirm_password(user.getPassword());
 
         return userRepository.save(user);
     }
 
-    public User authenticate(AuthParams input) {
+    public User authenticate(AuthDTO input) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         input.getEmail(),

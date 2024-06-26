@@ -13,8 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.tienda.tienda.annotations.PasswordMatching;
-import com.tienda.tienda.annotations.StrongPassword;
+import com.tienda.tienda.vars.params.UserDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -25,13 +24,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "users")
@@ -39,51 +36,42 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @EnableJpaAuditing
-@PasswordMatching(
-    password = "password",
-    confirmPassword = "confirm_password",
-    message = "Las contraseñas deben coincidir"
-)
 public class User implements UserDetails {
+
+    public User(UserDTO user) {
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, columnDefinition = "BIGINT(20) UNSIGNED")
     private Long id;
 
     @Column(nullable = false, unique = true, length = 50)
-    @Size(min = 0, max = 50, message = "El nombre de usuario tiene un límite de 50 caracteres")
-    @NotBlank(message = "El nombre de usuario es necesario")
     private String username;
 
     @Column(nullable = false, unique = true, length = 50)
-    @Size(min = 0, max = 100, message = "El correo tiene un límite de 100 caracteres")
-    @NotBlank(message = "El correo es necesario")
-    @Email(message = "El correo es invalido")
     private String email;
 
     @Column(nullable = false, unique = false, length = 50)
     private String roles = "USER";
 
     @Column(nullable = false, unique = true, length = 75)
-    @Size(min = 0, max = 75, message = "La contraseña tiene un límite de 75 caracteres")
-    @NotBlank(message = "La contraseña es necesaria")
-    @StrongPassword
     private String password;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    private Timestamp created_at;
+    public Timestamp created_at;
 
     @UpdateTimestamp
     @Column(nullable = false, updatable = false)
-    private Timestamp updated_at;
-
-    @Transient
-    @Size(min = 0, max = 75, message = "La contraseña tiene un límite de 75 caracteres")
-    @NotBlank(message = "Se debe confirmar la contraseña")
-    private String confirm_password;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user_id", orphanRemoval = true)
+    public Timestamp updated_at;
+    
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Product> products;
 
     @Override

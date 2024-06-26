@@ -20,6 +20,16 @@ public class JsonResponses {
 
         return new ResponseEntity<>(jsonObject, statusCode);
     }
+    
+    public ResponseEntity<?> ReturnErrorData(Object data, String message) {
+        JSONDataObject jsonObject = new JSONDataObject();
+        
+        jsonObject.setData(data);
+        jsonObject.setMessage(message);
+        jsonObject.setStatus(StringConsts.Error);
+        
+        return new ResponseEntity<>(jsonObject, HttpStatus.BAD_REQUEST);
+    }
 
     public ResponseEntity<?> ReturnOkData(Object data, String message) {
         JSONDataObject jsonObject = new JSONDataObject();
@@ -31,15 +41,13 @@ public class JsonResponses {
         return new ResponseEntity<>(jsonObject, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> ReturnErrorData(Object data, String message) {
-        JSONDataObject jsonObject = new JSONDataObject();
-        
-        jsonObject.setData(data);
+    public ResponseEntity<?> ReturnOkMessage(String message) {
+        JSONMessageObject jsonObject = new JSONMessageObject();
+
         jsonObject.setMessage(message);
-        jsonObject.setStatus(StringConsts.Error);
+        jsonObject.setStatus(StringConsts.Ok);
 
-        return new ResponseEntity<>(jsonObject, HttpStatus.BAD_REQUEST);
-
+        return new ResponseEntity<>(jsonObject, HttpStatus.OK);
     }
-
+    
 }

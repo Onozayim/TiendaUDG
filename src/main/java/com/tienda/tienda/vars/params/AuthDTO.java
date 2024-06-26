@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthParams {
+public class AuthDTO {
     @NotBlank(message = "Favor de ingresar el correo")
     @Size(min = 0, max = 100, message = "El correo tiene un límite de 100 caracteres")
     @Email(message = "El correo es invalido")

@@ -1,12 +1,14 @@
 package com.tienda.tienda.entities;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import jakarta.persistence.CascadeType;
+import com.tienda.tienda.vars.params.ProductDTO;
+import com.tienda.tienda.vars.params.UpdateProductDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +20,9 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "products")
@@ -26,6 +30,22 @@ import lombok.NoArgsConstructor;
 @Data
 @EnableJpaAuditing
 public class Product {
+
+    public Product(ProductDTO product) {
+        this.name = product.getName();
+        this.description = product.getDescription();
+        this.cost = product.getCost();
+        this.stock = product.getStock();
+    }
+
+    public Product(UpdateProductDTO product) {
+        this.id = product.getId();
+        this.name = product.getName();
+        this.description = product.getDescription();
+        this.cost = product.getCost();
+        this.stock = product.getStock();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, columnDefinition = "BIGINT(20) UNSIGNED")
@@ -37,31 +57,29 @@ public class Product {
     private String name;
 
     @Column(nullable = false, unique = false, length = 255)
-    @Size(min = 0, max = 255, message = "La descripcion del producto tiene un límite de 255 caracteres")
-    @NotBlank(message = "La descripcion del producto es necesario")
     private String description;
 
     @Column(nullable = false, unique = false)
-    @NotBlank(message = "El costo del producto es necesario")
     private Float cost;
 
-    @Column(nullable = false, unique = false, columnDefinition = "INT(5) UNSIGNED")
-    @NotBlank(message = "El stock del producto es necesario")
+    @Column(nullable = false, unique = false, columnDefinition = "INT(5)")
     private Integer stock;
 
-    @Column(nullable = false, unique = false)
-    private Float available_stock;
+    @Column(nullable = false, unique = false, columnDefinition = "INT(5)")
+    private Integer available_stock;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    private Timestamp created_at;
+    public Timestamp created_at;
 
     @UpdateTimestamp
     @Column(nullable = false, updatable = false)
-    private Timestamp updated_at;
+    public Timestamp updated_at;
 
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user_id;
+    @JoinColumn(name = "user_id")
+    private User user;
 }
