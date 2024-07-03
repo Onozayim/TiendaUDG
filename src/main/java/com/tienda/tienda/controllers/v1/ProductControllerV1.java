@@ -47,7 +47,7 @@ public class ProductControllerV1 {
         Product product = new Product(request);
         product.setUser(user);
         productService.saveProduct(product);
-        return jsonResponses.ReturnOkData(product, "Producto creado");
+        return jsonResponses.ReturnOkData(new ProductUserDTO(product), "Producto creado");
     }
 
     @PreAuthorize("hasAuthority('USER')")

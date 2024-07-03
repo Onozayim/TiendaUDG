@@ -17,11 +17,7 @@ public class ProductUserDTO {
         this.cost = product.getCost();
         this.stock = product.getStock();
 
-        this.user = new UserDTO();
-
-        this.user.setId(product.getUser().getId());
-        this.user.setEmail(product.getUser().getEmail());
-        this.user.setUsername(product.getUser().getUsername());
+        this.user = new UserDTO(product.getUser());
     }
 
     private String name;

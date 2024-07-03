@@ -36,6 +36,10 @@ public class PurchaseRequest {
     @Column(nullable = false, unique = false, columnDefinition = "INT(5)")
     private Integer quantity;
 
+
+    @Column(nullable = false, unique = false, columnDefinition = "CHAR(1)")
+    private Character status = 'P';
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     public Timestamp created_at;

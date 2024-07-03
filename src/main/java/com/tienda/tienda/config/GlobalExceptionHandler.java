@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import com.tienda.tienda.exceptions.PrNotPending;
 import com.tienda.tienda.vars.StringConsts;
 import com.tienda.tienda.vars.responses.JsonResponses;
 
@@ -139,6 +140,14 @@ public class GlobalExceptionHandler {
         return this.jsonResponses.ReturnErrorMessage(
             ex.getMessage(),
             HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(PrNotPending.class)
+    protected ResponseEntity<?> noSuchElement(PrNotPending ex, HttpServletRequest request) {
+        return this.jsonResponses.ReturnErrorMessage(
+            ex.getMessage(),
+            HttpStatus.BAD_REQUEST
         );
     }
     
