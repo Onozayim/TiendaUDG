@@ -8,4 +8,5 @@ public interface ProductService {
     public Product saveProduct(Product product);
     public Product findProduct(Long id);
     public Product updateProduct(Long id, ProductDTO productDTO);
+    public void deleteProduct(Long id);
 }

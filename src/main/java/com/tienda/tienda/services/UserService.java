@@ -9,4 +9,5 @@ public interface UserService {
     public User createUser(User user);
     public Optional<User> findByEmail(String email);
     public Optional<User> findByUsername(String username);
+    public void deleteUser(Long id);
 }

@@ -3,13 +3,13 @@ package com.tienda.tienda.controllers.v1;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tienda.tienda.entities.User;
-import com.tienda.tienda.responses.JsonResponses;
 import com.tienda.tienda.services.AuthenticationService;
 import com.tienda.tienda.services.JwtService;
 import com.tienda.tienda.services.UserService;
 import com.tienda.tienda.vars.JWT;
 import com.tienda.tienda.vars.params.AuthDTO;
-import com.tienda.tienda.vars.params.UserDTO;
+import com.tienda.tienda.vars.params.RegisterDTO;
+import com.tienda.tienda.vars.responses.JsonResponses;
 
 import jakarta.validation.Valid;
 
@@ -39,7 +39,7 @@ public class AuthControllerV1 {
     JsonResponses jsonResponses;
     
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> postRegister(@Valid @RequestBody UserDTO register) {
+    public ResponseEntity<?> postRegister(@Valid @RequestBody RegisterDTO register) {
         List<String> errors = new ArrayList<>();
         Map<String, List<String>> result = new HashMap<>();
 

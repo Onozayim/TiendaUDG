@@ -1,12 +1,10 @@
-package com.tienda.tienda.responses;
+package com.tienda.tienda.vars.responses;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.tienda.tienda.vars.JSONDataObject;
-import com.tienda.tienda.vars.JSONMessageObject;
 import com.tienda.tienda.vars.StringConsts;
 
 @Service

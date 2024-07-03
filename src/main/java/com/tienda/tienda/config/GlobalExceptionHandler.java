@@ -16,11 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import com.tienda.tienda.responses.JsonResponses;
 import com.tienda.tienda.vars.StringConsts;
+import com.tienda.tienda.vars.responses.JsonResponses;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -42,6 +45,34 @@ public class GlobalExceptionHandler {
         result.put("errors", errors);   
 
         return jsonResponses.ReturnErrorData(result, "Argumentos incorrectos");
+    }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    protected ResponseEntity<?> notValid(HandlerMethodValidationException ex, HttpServletRequest request) {
+        List<String> errors = new ArrayList<>();
+
+        ex.getAllErrors().forEach(err -> errors.add(err.getDefaultMessage()));
+
+        Map<String, List<String>> result = new HashMap<>();
+        result.put("errors", errors);   
+
+        return jsonResponses.ReturnErrorData(result, "Argumentos incorrectos");
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    protected ResponseEntity<?>notFound(NoResourceFoundException ex, HttpServletRequest request) {
+        return jsonResponses.ReturnErrorMessage(
+            "Recurso no encontrado", 
+            HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(MissingPathVariableException.class)
+    protected ResponseEntity<?>missingVariable(MissingPathVariableException ex, HttpServletRequest request) {
+        return jsonResponses.ReturnErrorMessage(
+            "Favor de ingresar los parametros necesarios",
+            HttpStatus.BAD_REQUEST
+        );
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

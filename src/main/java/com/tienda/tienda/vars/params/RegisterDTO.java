@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
     confirmPassword = "confirm_password",
     message = "Las contraseñas deben coincidir"
 )
-public class UserDTO {
+public class RegisterDTO {
     @Size(min = 0, max = 50, message = "El nombre de usuario tiene un límite de 50 caracteres")
     @NotBlank(message = "El nombre de usuario es necesario")
     private String username;

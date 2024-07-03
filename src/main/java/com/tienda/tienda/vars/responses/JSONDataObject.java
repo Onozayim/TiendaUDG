@@ -1,4 +1,4 @@
-package com.tienda.tienda.vars;
+package com.tienda.tienda.vars.responses;
 
 import lombok.Data;
 

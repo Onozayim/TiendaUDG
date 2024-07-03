@@ -13,7 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.tienda.tienda.vars.params.UserDTO;
+import com.tienda.tienda.vars.params.RegisterDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -28,7 +28,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Table(name = "users")
@@ -38,7 +37,7 @@ import lombok.ToString;
 @EnableJpaAuditing
 public class User implements UserDetails {
 
-    public User(UserDTO user) {
+    public User(RegisterDTO user) {
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.password = user.getPassword();
@@ -69,10 +68,12 @@ public class User implements UserDetails {
     @Column(nullable = false, updatable = false)
     public Timestamp updated_at;
     
-    @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Product> products;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PurchaseRequest> purchase_request;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
