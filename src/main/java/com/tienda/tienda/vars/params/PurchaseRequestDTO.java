@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CreatePrDTO {
+public class PurchaseRequestDTO {
     @NotNull
     @Range(min = 0, message = "Porfavor, ingrese un id valido")
     private Long product_id;

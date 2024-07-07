@@ -1,3 +1,4 @@
+package com.tienda.tienda.utils;
 // package com.tienda.tienda.utils.auth;
 
 // import org.springframework.context.annotation.Bean;

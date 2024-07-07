@@ -1,5 +1,9 @@
 package com.tienda.tienda.vars.responses;
 
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+
 import com.tienda.tienda.entities.User;
 
 import lombok.AllArgsConstructor;
@@ -15,9 +19,11 @@ public class UserDTO {
         this.id = user.getId();
         this.username = user.getUsername();
         this.email = user.getEmail();
+        authorities = user.getAuthorities();
     }
 
     private Long id;
     private String username;
     private String email;
+    Collection<? extends GrantedAuthority> authorities;
 }

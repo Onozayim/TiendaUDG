@@ -1,6 +1,6 @@
 package com.tienda.tienda.entities;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -62,11 +62,11 @@ public class User implements UserDetails {
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
-    public Timestamp created_at;
+    public Instant created_at;
 
     @UpdateTimestamp
     @Column(nullable = false, updatable = false)
-    public Timestamp updated_at;
+    public Instant updated_at;
     
     @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -75,11 +75,18 @@ public class User implements UserDetails {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PurchaseRequest> purchase_request;
 
+     @OneToMany(fetch = FetchType.EAGER, mappedBy = "buyer", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CustomRequest> custom_request_buyer;
+
+     @OneToMany(fetch = FetchType.EAGER, mappedBy = "seller", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CustomRequest> custom_request_seller;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = Arrays.stream(roles.split(";"))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
+
         return authorities;
     }
 

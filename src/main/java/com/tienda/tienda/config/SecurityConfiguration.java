@@ -32,6 +32,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/v1/user/**").authenticated())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/v1/products/**").authenticated())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/v1/pr/**").authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/v1/cr/**").authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

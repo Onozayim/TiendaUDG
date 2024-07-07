@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PurchaseRequestDTO {
-    public PurchaseRequestDTO(PurchaseRequest purchaseRequest) {
+public class PRUserProductDTO {
+    public PRUserProductDTO(PurchaseRequest purchaseRequest) {
         this.product = new ProductUserDTO(purchaseRequest.getProduct());
         this.user = new UserDTO(purchaseRequest.getUser());
     }

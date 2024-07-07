@@ -1,5 +1,6 @@
 package com.tienda.tienda.services.impls;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User findUser(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Usuario no encontrado"));
+    }
+
+
+    @Override
+    public User findSellerByEmail(String email) {
+        return userRepository.findSellerByEmail(email).orElseThrow(() -> new NoSuchElementException("Vendedor no encontrado"));
     }
 }

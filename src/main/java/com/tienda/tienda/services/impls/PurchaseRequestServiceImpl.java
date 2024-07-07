@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tienda.tienda.entities.PurchaseRequest;
+import com.tienda.tienda.entities.User;
 import com.tienda.tienda.exceptions.PrNotPending;
 import com.tienda.tienda.repositories.PurchaseRequestRepository;
 import com.tienda.tienda.services.PurchaseRequestService;
@@ -21,8 +22,11 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService {
     }
 
     @Override
-    public PurchaseRequest acceptPurchaseRequest(Long id) throws PrNotPending {
+    public PurchaseRequest acceptPurchaseRequest(User user, Long id) throws PrNotPending {
         PurchaseRequest purchaseRequest = this.findPurchaseRequest(id);
+
+        if(user.getId() != purchaseRequest.getProduct().getUser().getId()) 
+            throw new PrNotPending("No tienes el permiso de aceptar la solicitud");
 
         if(purchaseRequest.getStatus() != 'P')
             throw new PrNotPending("Solicitud de compra no esta pendiente");
@@ -33,8 +37,11 @@ public class PurchaseRequestServiceImpl implements PurchaseRequestService {
     }
 
     @Override
-    public PurchaseRequest rejectPurchaseRequest(Long id) throws PrNotPending {
+    public PurchaseRequest rejectPurchaseRequest(User user, Long id) throws PrNotPending {
         PurchaseRequest purchaseRequest = this.findPurchaseRequest(id);
+
+        if(user.getId() != purchaseRequest.getProduct().getUser().getId()) 
+            throw new PrNotPending("No tienes el permiso de rechazar la solicitud");
 
         if(purchaseRequest.getStatus() != 'P')
             throw new PrNotPending("Solicitud de compra no esta pendiente");

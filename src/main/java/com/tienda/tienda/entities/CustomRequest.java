@@ -1,8 +1,6 @@
 package com.tienda.tienda.entities;
 
-
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,24 +15,28 @@ import lombok.Setter;
 
 
 @Entity
-@Table(name = "purchase_requests")
+@Table(name = "custom_requests")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @EnableJpaAuditing
-public class PurchaseRequest extends BaseEntity {
-    @Column(nullable = false, unique = false, columnDefinition = "INT(5)")
-    private Integer quantity;
+public class CustomRequest extends BaseEntity {
+
+    @Column(nullable = false, unique = false, length = 255)
+    private String description;
+
+    @Column(nullable = true, unique = false)
+    private Float cost;
 
     @Column(nullable = false, unique = false, columnDefinition = "CHAR(1)")
-    private Character status = 'P';
+    private Character status = 'R';
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "seller_id")
+    private User seller;
 }

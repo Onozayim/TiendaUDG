@@ -10,4 +10,6 @@ public interface UserService {
     public Optional<User> findByEmail(String email);
     public Optional<User> findByUsername(String username);
     public void deleteUser(Long id);
+    public User findUser(Long id);
+    public User findSellerByEmail(String email);
 }
